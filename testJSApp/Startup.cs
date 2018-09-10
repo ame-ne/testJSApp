@@ -27,8 +27,11 @@ namespace testJSApp
                 options.UseSqlServer(
                     Configuration["ConnectionStrings:DefaultConnection"]));
 
-            services.AddTransient<IQuestionRepository, EFQuestionRepository>();
+            services.AddTransient<ITestService, EFQuestionRepository>();
+            services.AddMemoryCache();
+            services.AddSession();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc();
         }
 
@@ -38,13 +41,22 @@ namespace testJSApp
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSession();
             app.UseStaticFiles();
-            app.UseMvc(route =>
+            app.UseMvc(route => {
+                route.MapRoute(
+                    name: "api",
+                    template: "api/{controller}/{id?}",
+                    defaults: new { controller = "TestService" }
+                );
                 route.MapRoute(
                     name: "default",
                     template: "{controller}/{action}/{id?}",
                     defaults: new { controller = "Home", action = "Index" }
-                ));
+                );
+            }
+            );
+        
         }
     }
 }

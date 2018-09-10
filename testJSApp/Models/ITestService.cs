@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 
 namespace testJSApp.Models
 {
-    interface IQuestionRepository
+    public interface ITestService
     {
         IQueryable<QuestionEntity> QuestionEntities { get; }
+
+        int TestInit();
+        QuestionEntity GetNext();
     }
 }
