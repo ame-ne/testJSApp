@@ -10,6 +10,6 @@ namespace testJSApp.Models
         IQueryable<QuestionEntity> QuestionEntities { get; }
 
         int TestInit();
-        QuestionEntity GetNext();
+        QuestionEntity GetNext(int id);
     }
 }

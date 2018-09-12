@@ -20,11 +20,9 @@ namespace testJSApp.Models
 
         public IQueryable<QuestionEntity> QuestionEntities => context.QuestionEntities;
 
-        public QuestionEntity GetNext()
+        public QuestionEntity GetNext(int id)
         {
-            var random = new Random();
-            var nextQuestionNumber = random.Next(QuestionEntities.Min(q => q.Id), QuestionEntities.Max(q => q.Id));
-            return QuestionEntities.FirstOrDefault(x => x.Id == nextQuestionNumber);
+            return session.GetJson<List<QuestionEntity>>("nQuestions")?.ElementAtOrDefault(id);
         }
 
         public int TestInit()
@@ -33,9 +31,14 @@ namespace testJSApp.Models
             var selectedQuestionsCount = random.Next(1, QuestionEntities.Count());
             //var nQuestions = QuestionEntities.Take(selectedQuestionsCount);
             List<QuestionEntity> nQuestions = new List<QuestionEntity>();
+
+            var minQuestionId = QuestionEntities.Min(q => q.Id);
+            var maxQuestionId = QuestionEntities.Max(q => q.Id);
+
             for (int i=0; i< selectedQuestionsCount; i++)
             {
-                var selectedQuestion = GetNext();
+                var nextQuestionNumber = random.Next(minQuestionId, maxQuestionId);
+                var selectedQuestion = QuestionEntities.FirstOrDefault(x => x.Id == nextQuestionNumber);
                 nQuestions.Add(selectedQuestion);
             }
             session.SetJson("nQuestions", nQuestions);

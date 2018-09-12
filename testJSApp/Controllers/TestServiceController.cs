@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using testJSApp.Models;
 
 namespace testJSApp.Controllers
@@ -27,10 +28,10 @@ namespace testJSApp.Controllers
             return repository.TestInit();
         }
 
-        [HttpGet("{id}")]
-        public string GetNext(int id)
+        [HttpPost]
+        public JsonResult GetNext([FromBody]int id)
         {
-            return "";
+            return Json(repository.GetNext(id)); 
         }
 
 
