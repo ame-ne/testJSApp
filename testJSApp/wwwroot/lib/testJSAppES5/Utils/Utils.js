@@ -1,14 +1,14 @@
 ﻿'use strict';
 
 var HttpUtil = {
-    SendData: function (url, dataToSend, success) {
+    SendData: function (url, dataToSend, callback) {
         var xhttp = new XMLHttpRequest();
 
 
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                success(this.responseText);
+                callback(this.responseText);
             }
         };
         if (dataToSend) {
