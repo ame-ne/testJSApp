@@ -15,13 +15,6 @@ testController.prototype = (function () {
 
     var createNextQuestionObject = function () {
         if (questionCount == 0) {
-            //testController.prototype.ajaxToService(serviceUrl, null, function (textdata) {
-            //    var loadedQuestionsCount = JSON.parse(textdata);
-            //    questionCount = loadedQuestionsCount;
-            //    questionIndex = 0;
-            //    loadQuestion();
-            //});
-
             testController.prototype.ajaxToService(serviceUrl)
                 .then(function (response) {
                     var loadedQuestionsCount = JSON.parse(response);
@@ -41,16 +34,11 @@ testController.prototype = (function () {
     };
 
     var loadQuestion = function () {
-        //testController.prototype.ajaxToService(serviceUrl, JSON.stringify(questionIndex), function (textdata) {
-        //    var loadedQuestion = JSON.parse(textdata);
-        //    questionIndex++;
-        //    questionFactory(loadedQuestion);
-        //});
-
         testController.prototype.ajaxToService(serviceUrl, JSON.stringify(questionIndex))
             .then(function (response) {
                 var loadedQuestion = JSON.parse(response);
                 questionIndex++;
+                HtmlUtil.PasteHtml('questionCount', questionIndex + ' из ' + questionCount)
                 questionFactory(loadedQuestion);
             }, function (error) {
                 console.log(error);
@@ -66,9 +54,7 @@ testController.prototype = (function () {
         else {
             var radioQuestionObj = new radioQuestion(loadedQuestion.text, loadedQuestion.options, loadedQuestion.answers);
             radioQuestionObj.init(questionObj.handleNext, addQuestionToList);
-        }
-        
-
+        }      
     };
 
     var showResult = function () {
@@ -81,6 +67,7 @@ testController.prototype = (function () {
 
         HtmlUtil.PasteHtml('questionText', '<div><p>Вы набрали ' + Math.round(totalScore) + ' баллов из ' + maxScore + '*</p><small>*относитесь к этому как хотите</small></div>');
         HtmlUtil.PasteHtml('questionAnswerVariants', '');
+        HtmlUtil.PasteHtml('questionCount', '');
         HtmlUtil.PasteHtml('questionNavigation', '<a class="btn btn-outline-danger" id="restartBtn">Начать заново</a>');
         document.getElementById('restartBtn').onclick = function () { var testCtrl = new testController(); testCtrl.init(); createNextQuestionObject(); };
     };
@@ -113,11 +100,6 @@ testController.prototype = (function () {
                     xhttp.send();
                 }
             });
-
-            //HttpUtil.SendData(serviceUrl, dataToSend, callback);
-
-
-
         },
         init: function () {
             questionCount = 0;
@@ -125,6 +107,7 @@ testController.prototype = (function () {
             questionList = [];
             HtmlUtil.PasteHtml('questionText', '');
             HtmlUtil.PasteHtml('questionAnswerVariants', '');
+            HtmlUtil.PasteHtml('questionCount', '');
             HtmlUtil.PasteHtml('questionNavigation', '<a class="btn btn-outline-danger" id="startBtn">Начать</a>');
             document.getElementById('startBtn').onclick = createNextQuestionObject;
         }
