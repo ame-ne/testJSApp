@@ -1,7 +1,6 @@
 ﻿'use strict';
 
 function checkboxQuestion() {
-    var self = this;
     //вызов конструктора родителя
     question.apply(this, arguments);
 
@@ -10,7 +9,7 @@ function checkboxQuestion() {
         var selectedAnswers = [];
         if (questionAnswerVariantsArea) {
             var checkboxElements = document.getElementsByName('answer');
-            for (var i = 0; i < checkboxElements.length; i++) {
+            for (var i = 0, N = checkboxElements.length; i < N; i++) {
                 if (checkboxElements[i].checked) {
                     selectedAnswers.push(checkboxElements[i].value);
                 }
@@ -27,15 +26,13 @@ function checkboxQuestion() {
         }
         var questionAnswerVariantsArea = document.getElementById('questionAnswerVariants');
         if (questionAnswerVariantsArea) {
-            for (var i = 0; i < this.options.length; i++) {
-                questionAnswerVariantsArea.innerHTML = '<div class="checkbox"><label><input type="checkbox" name="answer" value=' + this.options[i] + ' /> ' + this.options[i] + '</label></div>';
+            questionAnswerVariantsArea.innerHTML = '';
+            for (var i = 0, N = this.options.length; i < N; i++) {
+                questionAnswerVariantsArea.innerHTML += '<div class="checkbox"><label><input type="checkbox" name="answer" value=\'' + this.options[i] + '\' /> ' + this.options[i] + '</label></div>';
             }
         }
-        var buttonsArea = document.getElementById('questionNavigation');
-        if (buttonsArea) {
-            buttonsArea.innerHTML = '<a class="btn btn-outline-danger" id="nextBtn">Следующий</a>';
-            document.getElementById('nextBtn').addEventListener('click', function () { handleNext(callbackQuestion, callbackController) });
-        }
+        HtmlUtil.PasteHtml('questionNavigation', '<a class="btn btn-outline-danger" id="nextBtn">Следующий</a>');
+        document.getElementById('nextBtn').addEventListener('click', function () { handleNext(callbackQuestion, callbackController) });
     };
 
 

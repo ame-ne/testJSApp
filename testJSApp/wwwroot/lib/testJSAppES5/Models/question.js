@@ -10,6 +10,10 @@ function question(text, options, answers) {
     this.options = Base64Util.DecodeData(options);
     this.text = Base64Util.DecodeData(text);
 
+    this.maxScore = (function () {
+        return Array.isArray(_answers) ? _answers.length * oneAnswerCount : oneAnswerCount;
+    })();
+
     this.getScore = function () {
         return _score;
     };

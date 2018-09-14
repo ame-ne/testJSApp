@@ -1,27 +1,24 @@
 ﻿'use strict';
 
-var HttpUtil = {
-    SendData: function (url, dataToSend, callback) {
-        var xhttp = new XMLHttpRequest();
-
-
-
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                callback(this.responseText);
-            }
-        };
-        if (dataToSend) {
-            xhttp.open('POST', url, true);
-            xhttp.setRequestHeader("Content-type", "application/json;odata=verbose;charset=utf-8");
-            xhttp.send(dataToSend);
-        }
-        else {
-            xhttp.open('GET', url, true);
-            xhttp.send();
-        }
-    }
-};
+//var HttpUtil = {
+//    SendData: function (url, dataToSend, callback) {
+//        var xhttp = new XMLHttpRequest();
+//        xhttp.onreadystatechange = function () {
+//            if (this.readyState == 4 && this.status == 200) {
+//                callback(this.responseText);
+//            }
+//        };
+//        if (dataToSend) {
+//            xhttp.open('POST', url, true);
+//            xhttp.setRequestHeader("Content-type", "application/json;odata=verbose;charset=utf-8");
+//            xhttp.send(dataToSend);
+//        }
+//        else {
+//            xhttp.open('GET', url, true);
+//            xhttp.send();
+//        }
+//    }
+//};
 
 var Base64Util = {
     DecodeText: function (text) {
@@ -46,6 +43,15 @@ var Base64Util = {
         }
         else {
             return this.DecodeText(text);
+        }
+    }
+};
+
+var HtmlUtil = {
+    PasteHtml: function (areaName, content) {
+        var area = document.getElementById(areaName);
+        if (area) {
+            area.innerHTML = content;
         }
     }
 };
