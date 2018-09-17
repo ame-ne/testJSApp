@@ -4,7 +4,6 @@ function question(text, options, answers) {
     var self = this;
     var _answers = Base64Util.DecodeData(answers);
     var _score = 0;
-
     var oneAnswerCount = 10 / (Array.isArray(_answers) ? _answers.length : 1);
 
     this.options = Base64Util.DecodeData(options);
@@ -18,14 +17,10 @@ function question(text, options, answers) {
         return _score;
     };
 
-    var setScore = function (score) {
-        _score = score;
-    }
-
     this.handleNext = function (selectedAnswers, callback) {
         if (selectedAnswers && selectedAnswers.length > 0) {
             if (Array.isArray(_answers)) {
-                for (var i = 0; i < selectedAnswers.length; i++) {
+                for (var i = 0, N = selectedAnswers.length; i < N; i++) {
                     if (_answers.indexOf(selectedAnswers[i]) > -1) {
                         _score += oneAnswerCount;
                     }

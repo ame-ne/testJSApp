@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using testJSApp.Infrastructure;
 
 namespace testJSApp.Models
@@ -29,13 +28,12 @@ namespace testJSApp.Models
         {
             var random = new Random();
             var selectedQuestionsCount = random.Next(1, QuestionEntities.Count());
-            //var nQuestions = QuestionEntities.Take(selectedQuestionsCount);
             List<QuestionEntity> nQuestions = new List<QuestionEntity>();
 
             var minQuestionId = QuestionEntities.Min(q => q.Id);
             var maxQuestionId = QuestionEntities.Max(q => q.Id);
 
-            for (int i=0; i< selectedQuestionsCount; i++)
+            for (int i = 0; i < selectedQuestionsCount; i++)
             {
                 var nextQuestionNumber = random.Next(minQuestionId, maxQuestionId);
                 var selectedQuestion = QuestionEntities.FirstOrDefault(x => x.Id == nextQuestionNumber);

@@ -1,8 +1,9 @@
 ﻿'use strict';
 
 function checkboxQuestion() {
+    var self = this;
     //вызов конструктора родителя
-    question.apply(this, arguments);
+    question.apply(self, arguments);
 
     var handleNext = function (callbackQuestion, callbackController) {
         var questionAnswerVariantsArea = document.getElementById('questionAnswerVariants');
@@ -19,16 +20,15 @@ function checkboxQuestion() {
     };
 
     this.init = function (callbackQuestion, callbackController) {
-        var self = this;
         var questionTextArea = document.getElementById('questionText');
         if (questionTextArea) {
-            questionTextArea.innerHTML = '<div>' + this.text + '</div>';
+            questionTextArea.innerHTML = '<div>' + self.text + '</div>';
         }
         var questionAnswerVariantsArea = document.getElementById('questionAnswerVariants');
         if (questionAnswerVariantsArea) {
             questionAnswerVariantsArea.innerHTML = '';
-            for (var i = 0, N = this.options.length; i < N; i++) {
-                questionAnswerVariantsArea.innerHTML += '<div class="checkbox"><label><input type="checkbox" name="answer" value=\'' + this.options[i] + '\' /> ' + this.options[i] + '</label></div>';
+            for (var i = 0, N = self.options.length; i < N; i++) {
+                questionAnswerVariantsArea.innerHTML += '<div class="checkbox"><label><input type="checkbox" name="answer" value=\'' + self.options[i] + '\' /> ' + self.options[i] + '</label></div>';
             }
         }
         HtmlUtil.PasteHtml('questionNavigation', '<a class="btn btn-outline-danger" id="nextBtn">Следующий</a>');
