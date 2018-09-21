@@ -14,13 +14,15 @@ function testController() {
 
     var createNextQuestionObject = function () {
         if (questionCount == 0) {
-            self.ajaxToService(serviceUrl)
-                .then(function (response) {
+            self.ajaxToService(serviceUrl,
+                null,
+                function (response) {
                     var loadedQuestionsCount = JSON.parse(response);
                     questionCount = loadedQuestionsCount;
                     questionIndex = 0;
                     loadQuestion();
-                }, function (error) {
+                },
+                function (error) {
                     console.log(error);
                 });
         }
@@ -33,15 +35,17 @@ function testController() {
     };
 
     var loadQuestion = function () {
-        self.ajaxToService(serviceUrl, JSON.stringify(questionIndex))
-            .then(function (response) {
+        self.ajaxToService(serviceUrl,
+            JSON.stringify(questionIndex),
+            function (response) {
                 var loadedQuestion = JSON.parse(response);
                 if (loadedQuestion) {
                     questionIndex++;
                     HtmlUtil.PasteHtml('questionCount', questionIndex + ' из ' + questionCount)
                     questionFactory(loadedQuestion);
                 }
-            }, function (error) {
+            },
+            function (error) {
                 console.log(error);
             });
     };
@@ -75,32 +79,30 @@ function testController() {
         };
     };
 
-    this.ajaxToService = function (url, dataToSend) {
-        return new Promise(function (resolve, reject) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (xhttp.readyState == 4) {
-                    if (xhttp.status == 200) {
-                        resolve(xhttp.responseText);
-                    }
-                    else {
-                        reject(xhttp.statusText);
-                    }
+    this.ajaxToService = function (url, dataToSend, callbackOk, callbackError) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4) {
+                if (xhttp.status == 200) {
+                    callbackOk(xhttp.responseText);
                 }
-            };
-            xhttp.onerror = function () {
-                reject(xhttp.statusText);
-            };
-            if (dataToSend) {
-                xhttp.open('POST', url, true);
-                xhttp.setRequestHeader("Content-type", "application/json;odata=verbose;charset=utf-8");
-                xhttp.send(dataToSend);
+                else {
+                    callbackError(xhttp.statusText);
+                }
             }
-            else {
-                xhttp.open('GET', url, true);
-                xhttp.send();
-            }
-        });
+        };
+        xhttp.onerror = function () {
+            callbackError(xhttp.statusText);
+        };
+        if (dataToSend) {
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader("Content-type", "application/json;odata=verbose;charset=utf-8");
+            xhttp.send(dataToSend);
+        }
+        else {
+            xhttp.open('GET', url, true);
+            xhttp.send();
+        }
     };
 
     this.init = function () {
